@@ -6,7 +6,7 @@ Built Login and Home UI using Jetpack Compose, with navigation and data passing.
 /////////////////////////////////////
 Integrated API network calls using Retrofit, including refresh-token support and success failure snackbar UI.
 /////////////////////////////////////
-Created a listing UI with swipe-to-refresh and load-more and swipe item, using static data with images loaded from the server.
+Created a listing UI with swipe-to-refresh, Shimmar and load-more and swipe item, using static data with images loaded from the server.
 /////////////////////////////////////
 Added a collapsible toolbar in the Inbox module.
 /////////////////////////////////////
