@@ -14,3 +14,10 @@
 Video*****
 https://github.com/user-attachments/assets/594a6696-8468-484d-8a4d-f70774d01371
 
+
+
+Firebase*****
+1:- User Authantication.
+2:- Single screen compose UI view (like activity)
+3:- User List with click action.
+4:- Chat with user data.
