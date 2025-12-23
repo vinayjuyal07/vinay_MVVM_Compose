@@ -5,6 +5,7 @@ import com.example.jetpackcomposeui.model.InboxResponse
 import com.example.jetpackcomposeui.network.base.ResultState
 import com.example.jetpackcomposeui.model.LoginRequest
 import com.example.jetpackcomposeui.model.LoginResponse
+import com.example.jetpackcomposeui.model.UserModel
 import com.example.jetpackcomposeui.network.model.UserDetailsResponse
 import kotlinx.coroutines.flow.Flow
 
@@ -14,4 +15,6 @@ interface IAuthRepository {
     suspend fun hitUserDetailsApiCall(userId: Int): Flow<ResultState<UserDetailsResponse>>
 
     suspend fun hitInboxListApi(request : InboxRequest): Flow<ResultState<InboxResponse>>
+
+    suspend fun hitChatListApi(): Flow<ResultState<List<UserModel>>>
 }

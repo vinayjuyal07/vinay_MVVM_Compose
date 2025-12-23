@@ -34,7 +34,10 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.jetpackcomposeui.common_ui.BottomNavigationBar
 import com.example.jetpackcomposeui.model.LoginResponse
+import com.example.jetpackcomposeui.navigation.FullScreen
+import com.example.jetpackcomposeui.navigation.FullScreenHost
 import com.example.jetpackcomposeui.navigation.Routs
+import com.example.jetpackcomposeui.ui_activity.chat.UserListScreen
 import com.example.jetpackcomposeui.ui_activity.inbox.InboxScreen
 import com.example.jetpackcomposeui.ui_activity.profile.ProfileScreen
 import com.example.jetpackcomposeui.ui_activity.reel.ReelScreen
@@ -67,16 +70,22 @@ fun HomeScreen(loginResponse: LoginResponse?) {
         tabHistory.clear()
         tabHistory.add(inboxTab)
     }
-
+    val isFullScreen = homeViewModel.fullScreen != FullScreen.None
     Scaffold(
         modifier = if (isReelScreen) Modifier else Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = { if (!isReelScreen) HomeTopBar(title = currentTab.route, scrollBehavior)
+        topBar = {
+            if (!isFullScreen){ if (!isReelScreen) HomeTopBar(title = currentTab.route, scrollBehavior)
                  else Box(Modifier
                 .fillMaxWidth()
                 .height(WindowInsets.statusBars.asPaddingValues()
                     .calculateTopPadding()).background(Color.Red))
-                 },
+                 }else Box(Modifier
+                .fillMaxWidth()
+                .height(WindowInsets.statusBars.asPaddingValues()
+                    .calculateTopPadding()).background(Color.Red))},
+
         bottomBar = {
+            if (!isFullScreen) {
             BottomNavigationBar(
                 selectedTab = currentTab,
                 onTabSelected = { tab ->
@@ -85,7 +94,7 @@ fun HomeScreen(loginResponse: LoginResponse?) {
                         tabHistory.add(tab)
                     }
                 }
-            )
+            )}
 
         }
     ) { padding ->
@@ -108,11 +117,16 @@ fun HomeScreen(loginResponse: LoginResponse?) {
                 .fillMaxSize()
                 .padding(padding)
         ) { tab ->
-            when (tab) {
-                HomeTab.Inbox -> InboxScreen(homeViewModel)
-                HomeTab.Reel -> ReelScreen()
-                HomeTab.Profile -> ProfileScreen()
-                HomeTab.Settings -> SettingsScreen()
+            if (isFullScreen) {
+                FullScreenHost(homeViewModel)
+            }else {
+                when (tab) {
+                    HomeTab.Inbox -> InboxScreen(homeViewModel)
+                    HomeTab.Chat -> UserListScreen(homeViewModel)
+                    HomeTab.Reel -> ReelScreen()
+                    HomeTab.Profile -> ProfileScreen()
+                    HomeTab.Settings -> SettingsScreen()
+                }
             }
         }
     }

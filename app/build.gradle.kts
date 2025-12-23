@@ -8,7 +8,7 @@ plugins {
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
     id ("kotlin-parcelize")
-
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -101,18 +101,6 @@ dependencies {
     implementation("io.github.kevinnzou:compose-swipebox:1.4.0")
     implementation("io.coil-kt:coil-compose:2.6.0")  // image loaded
 
-
-    /*implementation("androidx.media3:media3-ui-compose:1.4.1")
-    implementation ("androidx.media3:media3-exoplayer:1.4.1")
-    implementation ("androidx.media3:media3-ui:1.4.1")
-    implementation("androidx.media3:media3-datasource-okhttp:1.4.1")*/
-
-    // Jetpack Compose VideoPlayer API (VideoPlayer + rememberVideoPlayerState)
-   /* implementation("androidx.media3:media3-ui-compose:1.5.0-alpha01")
-    implementation("androidx.media3:media3-exoplayer:1.5.0-alpha01")
-    implementation("androidx.media3:media3-datasource-okhttp:1.5.0-alpha01")*/
-
-
     // Media3 Compose VideoPlayer API
   //  implementation("androidx.media3:media3-ui-compose:1.5.0-alpha01")
 // ExoPlayer core
@@ -123,4 +111,12 @@ dependencies {
 // Optional: OkHttp for caching/network
     implementation("androidx.media3:media3-datasource-okhttp:1.5.0")
     //implementation("androidx.media3:media3-datasource-okhttp:1.5.0-alpha01")
+
+    // Import the Firebase BoM
+    implementation(platform("com.google.firebase:firebase-bom:34.6.0"))
+    // TODO: Add the dependencies for Firebase products you want to use
+    // When using the BoM, don't specify versions in Firebase dependencies
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-database")
 }

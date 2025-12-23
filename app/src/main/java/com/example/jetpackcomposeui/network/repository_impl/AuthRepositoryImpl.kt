@@ -2,15 +2,18 @@ package com.example.jetpackcomposeui.network.repository_impl
 
 import com.example.jetpackcomposeui.model.InboxRequest
 import com.example.jetpackcomposeui.model.InboxResponse
+import com.example.jetpackcomposeui.model.LoginRequest
+import com.example.jetpackcomposeui.model.LoginResponse
+import com.example.jetpackcomposeui.model.UserModel
 import com.example.jetpackcomposeui.network.api.AuthApi
 import com.example.jetpackcomposeui.network.api_client.ErrorParser
 import com.example.jetpackcomposeui.network.base.ErrorEntity
 import com.example.jetpackcomposeui.network.base.ResultState
-import com.example.jetpackcomposeui.model.LoginRequest
-import com.example.jetpackcomposeui.model.LoginResponse
-import com.example.jetpackcomposeui.model.MessageType
 import com.example.jetpackcomposeui.network.model.UserDetailsResponse
 import com.example.jetpackcomposeui.network.repository.IAuthRepository
+import com.example.jetpackcomposeui.utility.CommonUtils
+import com.example.jetpackcomposeui.utility.FirebaseUtil
+import com.example.jetpackcomposeui.utility.FirebaseUtil.observeUsersList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -28,14 +31,16 @@ class AuthRepositoryImpl @Inject constructor(private val authApi: AuthApi): Erro
             //val response = authApi.login(loginRequest)
             //emit(ResultState.Success(response))
 
-            delay(5000)
+            // local handling
+            /*delay(5000)
             if(loginRequest.email.equals("Vinay") && loginRequest.password.equals("123456")){
                 val successResponse=LoginResponse("tieq7840r783nudyatigdsfbdyfuydfibf7","dkhfvdffvdfffl",87424344L)
                 emit(ResultState.Success(successResponse))
             }else {
                 val response = ErrorEntity.Error( 402,"Username and password does not match..!!")
                 emit(ResultState.Error(response))
-            }
+            }*/
+            emit(FirebaseUtil.loginFirebaseAuth(loginRequest.email, loginRequest.password))
         }.catch {
             emit(ResultState.Error(errorHandle(it).error))
         }.flowOn(Dispatchers.IO)
@@ -58,11 +63,12 @@ class AuthRepositoryImpl @Inject constructor(private val authApi: AuthApi): Erro
             //emit(ResultState.Success(response))
             delay(5000)
             if(request.page==10) {
-                val successResponse = InboxResponse(getMessageDummyList(), request.page,
+                val successResponse = InboxResponse(
+                    CommonUtils.getMessageDummyList(), request.page,
                     false, false, false)
                 emit(ResultState.Success(successResponse))
             }else if(request.page<=10) {
-                val successResponse = InboxResponse(getMessageDummyList(), request.page,
+                val successResponse = InboxResponse(CommonUtils.getMessageDummyList(), request.page,
                     request.hasMore, false, false)
                 emit(ResultState.Success(successResponse))
             }else {
@@ -74,34 +80,13 @@ class AuthRepositoryImpl @Inject constructor(private val authApi: AuthApi): Erro
         }.flowOn(Dispatchers.IO)
     }
 
-    var ids = 1100
-    fun getMessageDummyList(): List<MessageType> {
-        val imageList = arrayListOf<String>()
-        imageList.add("https://api.slingacademy.com/public/sample-photos/27.jpeg")
-        imageList.add("https://api.slingacademy.com/public/sample-photos/28.jpeg")
-        imageList.add("https://api.slingacademy.com/public/sample-photos/11.jpeg")
-        imageList.add("https://api.slingacademy.com/public/sample-photos/6.jpeg")
-        imageList.add("https://api.slingacademy.com/public/sample-photos/7.jpeg")
-        imageList.add("https://api.slingacademy.com/public/sample-photos/8.jpeg")
-        imageList.add("https://api.slingacademy.com/public/sample-photos/9.jpeg")
-        imageList.add("https://api.slingacademy.com/public/sample-photos/10.jpeg")
-        imageList.add("https://api.slingacademy.com/public/sample-photos/12.jpeg")
-        imageList.add("https://api.slingacademy.com/public/sample-photos/13.jpeg")
-        imageList.add("https://api.slingacademy.com/public/sample-photos/39.jpeg")
-        imageList.add("https://api.slingacademy.com/public/sample-photos/36.jpeg")
-        val list = arrayListOf<MessageType>()
-        repeat(10) { index ->
-            ids++
-            list.add(
-                MessageType(
-                    id = ids,
-                    title = "Dummy Title $ids",
-                    body = "This is a dummy message body for item $ids.",
-                    image = imageList[index]
-                )
-            )
-        }
-        return list
+    override suspend fun hitChatListApi(): Flow<ResultState<List<UserModel>>> {
+        return flow {
+            emit(ResultState.Loading())
+            observeUsersList().collect { emit(it) }
+        }.catch {
+            emit(ResultState.Error(errorHandle(it).error))
+        }.flowOn(Dispatchers.IO)
     }
 
 }

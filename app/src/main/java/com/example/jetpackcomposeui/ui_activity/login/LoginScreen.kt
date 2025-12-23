@@ -1,6 +1,8 @@
 package com.example.jetpackcomposeui.ui_activity.login
 
+import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -18,14 +20,15 @@ import com.example.jetpackcomposeui.utility.hideKeyboard
 import com.example.jetpackcomposeui.view_model.LoginViewModel
 
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
 fun LoginScreen(onLoginSuccess: (LoginResponse) -> Unit,
                 onForgotPassword: () -> Unit,  loginViewModel: LoginViewModel = hiltViewModel()) {
     val context = LocalContext.current
     // 👉 Observe LiveData     // ViewModel State
     val uiState by loginViewModel.uiState.observeAsState()
-    var emailId by remember { mutableStateOf("Vinay") }
-    var password by remember { mutableStateOf("123456") }
+    var emailId by remember { mutableStateOf("vinay@gmail.com") }
+    var password by remember { mutableStateOf("Vinay@123") }
     var passwordVisible by remember { mutableStateOf(false) }
     var showLoader by remember { mutableStateOf(false) }
 

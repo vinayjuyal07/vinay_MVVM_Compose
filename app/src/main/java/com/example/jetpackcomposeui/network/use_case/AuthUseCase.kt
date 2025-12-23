@@ -5,6 +5,7 @@ import com.example.jetpackcomposeui.model.InboxResponse
 import com.example.jetpackcomposeui.network.base.ResultState
 import com.example.jetpackcomposeui.model.LoginRequest
 import com.example.jetpackcomposeui.model.LoginResponse
+import com.example.jetpackcomposeui.model.UserModel
 import com.example.jetpackcomposeui.network.repository.IAuthRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -20,6 +21,10 @@ class AuthUseCase @Inject constructor(private val authRepository: IAuthRepositor
 
     suspend fun hitInboxListApi(request : InboxRequest): Flow<ResultState<InboxResponse>> {
         return authRepository.hitInboxListApi(request)
+    }
+
+    suspend fun hitChatListApi(): Flow<ResultState<List<UserModel>>> {
+        return authRepository.hitChatListApi()
     }
 
 }

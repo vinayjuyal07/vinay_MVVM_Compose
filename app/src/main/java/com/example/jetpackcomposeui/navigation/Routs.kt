@@ -9,4 +9,6 @@ object Routs {
     const val SETTINGS = "Settings"
 
     const val REEL = "Reel"
+
+    const val CHAT = "Chat"
 }
