@@ -11,6 +11,9 @@ import com.example.jetpackcomposeui.navigation.NavHostApp
 import com.example.jetpackcomposeui.ui_activity.login.LoginScreen
 import com.example.jetpackcomposeui.ui_activity.login.LoginUi
 import com.example.jetpackcomposeui.ui.theme.JetpackComposeUITheme
+import com.example.jetpackcomposeui.ui_activity.chat.chat_bot.BotMessageItem
+import com.example.jetpackcomposeui.ui_activity.chat.chat_bot.ImageCardItem
+import com.example.jetpackcomposeui.ui_activity.chat.chat_bot.UserMessageItem
 import com.example.jetpackcomposeui.ui_activity.home.HomeUi
 import com.example.jetpackcomposeui.ui_activity.inbox.MessageCard
 import dagger.hilt.android.AndroidEntryPoint

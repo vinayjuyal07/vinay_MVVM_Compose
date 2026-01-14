@@ -19,7 +19,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FabPosition
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -31,6 +37,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.jetpackcomposeui.common_ui.BottomNavigationBar
 import com.example.jetpackcomposeui.model.LoginResponse
@@ -72,6 +79,22 @@ fun HomeScreen(loginResponse: LoginResponse?) {
     }
     val isFullScreen = homeViewModel.fullScreen != FullScreen.None
     Scaffold(
+
+        floatingActionButton = {
+            if (!isFullScreen) {
+                FloatingActionButton(
+                    containerColor = Color.Red,
+                    contentColor = Color.White,
+                    onClick = { homeViewModel.open(FullScreen.AiChatBotUI("12345")) },
+                    modifier = Modifier.padding(16.dp),
+                    shape = CircleShape
+                ) {
+                    Icon(Icons.Default.Add, contentDescription = null)
+                }
+            }
+        },
+        floatingActionButtonPosition = FabPosition.End,
+
         modifier = if (isReelScreen) Modifier else Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             if (!isFullScreen){ if (!isReelScreen) HomeTopBar(title = currentTab.route, scrollBehavior)

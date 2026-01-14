@@ -6,4 +6,7 @@ sealed class FullScreen {
     object None : FullScreen()
     data class ChatUI(val userData: UserModel) : FullScreen()
     data class ProfileUI(val userId: String) : FullScreen()
+
+    //
+    data class AiChatBotUI(val userId: String) : FullScreen()
 }
